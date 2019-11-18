@@ -1,10 +1,10 @@
 import React from 'react';
 import Movie from './Movie.js';
+import Movies from './Movies.js';
 
 class MovieList extends React.Component {
   constructor (props) {
     super (props)
-
   }
 
   render () {
