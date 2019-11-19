@@ -1,6 +1,6 @@
 import React from 'react';
 import MovieList from './MovieList.js';
-import Search from './Search.js';
+import Form from './Form.js';
 import Movies from './Movies.js';
 
 class App extends React.Component {
@@ -8,14 +8,16 @@ class App extends React.Component {
     super (props)
 
     this.state = {
-      movies: Movies,
+      movies: [],
+      searchResultFound: true
     }
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleAddMovie = this.handleAddMovie.bind(this);
   }
 
   handleSearch(input) {
     const searchResults = [];
-    Movies.forEach((movie)=>{
+    this.state.movies.forEach((movie)=>{
       let titleLowerCase = movie.title.toLowerCase();
       let inputLowerCase = input.toLowerCase();
       if (titleLowerCase.includes(inputLowerCase)) {
@@ -23,18 +25,30 @@ class App extends React.Component {
       }
     })
     if (searchResults.length === 0) {
-      alert("No movies by that title found")
+      this.setState({searchResultFound: false})
     } else {
-      this.setState({movies: searchResults})
+      this.setState({movies: searchResults, searchResultFound: true})
     }
   }
 
-  render () {
+  handleAddMovie(input) {
+    this.setState({movies: this.state.movies.concat({title: input})});
+  }
+
+  render() {
+    const searchResultFound = this.state.searchResultFound;
+    let MovieListDisplayed;
+    if (searchResultFound) {
+      MovieListDisplayed = <MovieList movies={this.state.movies}></MovieList>
+    } else {
+      MovieListDisplayed = <div>No results found</div>
+    }
+
     return (
       <div>
         <div>Movie List!</div>
-        <Search handleSearch={this.handleSearch}></Search>
-        <MovieList movies={this.state.movies}></MovieList>
+        <Form handleSearch={this.handleSearch} handleAddMovie={this.handleAddMovie}></Form>
+        {MovieListDisplayed}
       </div>
     )
   }
