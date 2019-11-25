@@ -32,7 +32,7 @@ class Form extends React.Component {
   render() {
 
     return (
-      <div>
+      <div className="form-container">
         <input name="addMovieInput" onChange={this.handleTextboxChange}></input>
         <button name="add-movie-button" onClick={this.handleAddMovie}>Add</button>
 
